@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-read -r -p "What's the name of the Database that you want to connect to " DB_NAME
+read -r -p "What's the name of the Database that you want to connect to: " DB_NAME
 
-DB_PATH="/home/MyDBs/$DB_NAME"
+DB_PATH="/home/fiala/MyDBs/$DB_NAME"
 
 if [ -d "$DB_PATH" ]; then
     cd "$DB_PATH"
@@ -11,31 +11,32 @@ if [ -d "$DB_PATH" ]; then
     select choice in "${options[@]}"; do
         case $choice in
         "Create Table")
-            ./scripts/creat_table.sh
+            pwd
+            "/home/fiala/scripts/create_table.sh"
             break
             ;;
         "List Tables")
-            ./scripts/list_tables.sh
+            "/home/fiala/scripts/list_tables.sh"
             break
             ;;
         "Drop Table")
-            ./scripts/drop_tables.sh
+            "/home/fiala/scripts/drop_tables.sh"
             break
             ;;
         "Insert into Table")
-            ./scripts/insert_into_table.sh
+            "/home//fiala/scripts/insert_into_table.sh"
             break
             ;;
         "Select From Table")
-            ./scripts/select_from_table.sh
+            "/home/fiala/scripts/select_from_table.sh"
             break
             ;;
         "Delete From Table")
-            ./scripts/delete_from_table.sh
+            "/home/fiala/scripts/delete_from_table.sh"
             break
             ;;
         "Update Table")
-            ./scripts/update_table.sh
+            "/home/fiala/scripts/update_table.sh"
             break
             ;;
         *)
