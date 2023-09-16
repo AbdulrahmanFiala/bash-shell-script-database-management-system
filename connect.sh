@@ -11,7 +11,6 @@ if [ -d "$DB_PATH" ]; then
     select choice in "${options[@]}"; do
         case $choice in
         "Create Table")
-            pwd
             "../scripts/create_table.sh"
             break
             ;;
