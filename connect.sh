@@ -32,11 +32,11 @@ if [ -d "$DB_PATH" ]; then
             break
             ;;
         "Delete From Table")
-            "/home/fiala/scripts/delete_from_table.sh"
+            "./scripts/delete_record.sh"
             break
             ;;
         "Update Table")
-            "/home/fiala/scripts/update_table.sh"
+            "./scripts/update_table.sh"
             break
             ;;
         *)
