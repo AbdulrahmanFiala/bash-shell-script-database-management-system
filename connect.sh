@@ -11,31 +11,31 @@ if [ -d "$DB_PATH" ]; then
     select choice in "${options[@]}"; do
         case $choice in
         "Create Table")
-            "../scripts/create_table.sh"
+            "../../scripts/create_table.sh"
             break
             ;;
         "List Tables")
-            "../scripts/list_tables.sh"
+            "../../scripts/list_tables.sh"
             break
             ;;
         "Drop Table")
-            "../scripts/drop_tables.sh"
+            "../../scripts/drop_table.sh"
             break
             ;;
         "Insert into Table")
-            "../scripts/insert_into_table.sh"
+            "../../scripts/insert_into_table.sh"
             break
             ;;
         "Select From Table")
-            "../scripts/select_from_table.sh"
+            "../../scripts/select_from_table.sh"
             break
             ;;
         "Delete From Table")
-            "../scripts/delete_record.sh"
+            "../../scripts/delete_record.sh"
             break
             ;;
         "Update Table")
-            "../scripts/update_table.sh"
+            "../../scripts/update_table.sh"
             break
             ;;
         *)
