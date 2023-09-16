@@ -1,13 +1,12 @@
 #!/usr/bin/bash
 read -r -p "What's the name of the Database that you want to connect to: " DB_NAME
 
-DB_PATH="/home/fiala/MyDBs/$DB_NAME"
+DB_PATH="./MyDBs/$DB_NAME"
 
 if [ -d "$DB_PATH" ]; then
     cd "$DB_PATH"
     PS3="Select an option: "
     options=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table")
-
     select choice in "${options[@]}"; do
         case $choice in
         "Create Table")

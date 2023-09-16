@@ -10,9 +10,6 @@ for ((i = 1; i <= NO_OF_COLUMNS; i++)); do
 
     if [ $i -eq 1 ]; then
         echo "$column   $datatype   ⋮" >"$(pwd)/$TABLE_NAME"
-
-    elif [[ $i = "$NO_OF_COLUMNS" ]]; then
-        sed -i "s/$/    $column   $datatype/" "$(pwd)/$TABLE_NAME"
     else
         sed -i "s/$/    $column   $datatype    ⋮/" "$(pwd)/$TABLE_NAME"
     fi
