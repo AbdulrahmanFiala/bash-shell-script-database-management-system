@@ -12,23 +12,23 @@ if [ -d "$DB_PATH" ]; then
         case $choice in
         "Create Table")
             pwd
-            "/home/fiala/scripts/create_table.sh"
+            "./scripts/create_table.sh"
             break
             ;;
         "List Tables")
-            "/home/fiala/scripts/list_tables.sh"
+            "./scripts/list_tables.sh"
             break
             ;;
         "Drop Table")
-            "/home/fiala/scripts/drop_tables.sh"
+            "./scripts/drop_tables.sh"
             break
             ;;
         "Insert into Table")
-            "/home//fiala/scripts/insert_into_table.sh"
+            "./scripts/insert_into_table.sh"
             break
             ;;
         "Select From Table")
-            "/home/fiala/scripts/select_from_table.sh"
+            "./scripts/select_from_table.sh"
             break
             ;;
         "Delete From Table")
