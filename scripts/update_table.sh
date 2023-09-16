@@ -13,7 +13,7 @@ fieldNumber=$(awk 'BEGIN{FS="⋮"}{if(NR==1){for(i=1;i<=NF;i++){if($i=="'$field'
 if [[ $fieldNumber == "" ]]
 then
     echo "Not Found"
-    table_menu
+    . ../connect.sh
 else
     echo "Enter Value:"
     read value 2> /dev/null
@@ -22,7 +22,7 @@ else
     if [[ $result == "" ]]
     then
     echo "Value Not Found"
-    table_menu
+    . ../connect.sh
     else
         echo "Enter new Value to set:"
         read newValue 2>> /dev/null
@@ -33,7 +33,7 @@ else
         #substitute globally the oldvalue with the newvalue
         sed -i ''$NR's/'$oldValue'/'$newValue'/g' $table 2>> /dev/null
         echo "Row Updated Successfully"
-        table_menu
+        . ../connect.sh
     fi
 fi
 cd ../..
