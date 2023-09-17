@@ -6,7 +6,7 @@ DB_PATH="./MyDBs/$DB_NAME"
 if [ -d "$DB_PATH" ]; then
     cd "$DB_PATH"
     PS3="Select an option: "
-    options=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table")
+    options=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table" "Back to the main menue")
 
     select choice in "${options[@]}"; do
         case $choice in
@@ -36,6 +36,10 @@ if [ -d "$DB_PATH" ]; then
             ;;
         "Update Table")
             "../../scripts/update_table.sh"
+            break
+            ;;
+        "Back to the main menue")
+            "../../opening_menu.sh"
             break
             ;;
         *)
