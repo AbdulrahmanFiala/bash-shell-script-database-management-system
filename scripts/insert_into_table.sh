@@ -8,31 +8,31 @@ function primary_key_check() {
         for item in "${previous_values[@]}"; do
             while [[ "$item" == "$data" ]]; do
                 read -r -p "You can only enter unique values since this column is a primary key. Please enter a different value: " data
-                check_int
+                vaildate_int
             done
         done
     fi
 }
 
-function check_int() {
+function vaildate_int() {
     while [[ ! "$data" =~ [0-9]+ ]]; do
         read -r -p "Please enter a vaild integer: " data
     done
-    primary_key_check
+    primary_key_vaildate
 }
 
-function check_string() {
+function vaildate_string() {
     while [[ ! "$data" =~ ^[a-zA-Z\s]*$ ]]; do
         read -r -p "Please enter a vaild string: " data
     done
-    primary_key_check
+    primary_key_vaildate
 }
 
-function check_boolean() {
+function vaildate_boolean() {
     while [[ ! ("$data" == "true" || "$data" == "false") ]]; do
         read -r -p "Please enter a boolean value in small case: " data
     done
-    primary_key_check
+    primary_key_vaildate
 }
 
 # convert the list of tables files of the DB to an array to iterate over them.
@@ -53,13 +53,13 @@ select option in "${list_of_tables[@]}"; do
             data_var=$(awk -F "⋮" -v col="$i" 'NR == 1 {print $col}' "$(pwd)/$option" | awk -F "," '{print $2}')
 
             if [[ "$data_var" == *'int'* ]]; then
-                check_int
+                vaildate_int
 
             elif [[ "$data_var" == *'string'* ]]; then
-                check_string
+                vaildate_string
 
             else
-                check_boolean
+                vaildate_boolean
             fi
 
             sed -i '$s/$/              '"$data"'            ⋮/' "$(pwd)/$option"
