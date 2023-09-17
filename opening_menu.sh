@@ -34,6 +34,7 @@ case $choice in
 				exit;;
 
 *) 				echo "Invalid choice, please try again"
-				. ./opening_menu.sh;;
+				cd ../..
+				./opening_menu.sh;;
 esac
 done
