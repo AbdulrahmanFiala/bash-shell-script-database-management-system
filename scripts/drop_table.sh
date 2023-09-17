@@ -7,3 +7,7 @@ if [ -e "$(pwd)"/"$DROPPED_TABLE" ]; then
 else
     echo "$DROPPED_TABLE" does not exist as a table in the database
 fi
+
+echo "Getting back to connect DBs menue"
+cd "../../"
+"./connect.sh"

@@ -72,7 +72,9 @@ select option in "${list_of_tables[@]}"; do
 
             sed -i '$s/$/              '"$data"'            ⋮/' "$(pwd)/$option"
         done
-        break
+        echo "Getting back to connect DBs menue"
+        cd "../../"
+        "./connect.sh"
     else
         echo "Invalid choice. Please select a valid option."
     fi

@@ -43,7 +43,9 @@ select option in "${list_of_tables[@]}"; do
                     esac
                 done
 
-                break
+                echo "Getting back to connect DBs menue"
+                cd "../../"
+                "./connect.sh"
             }
         fi
     else
