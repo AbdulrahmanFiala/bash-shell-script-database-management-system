@@ -6,12 +6,17 @@ PRIMARY_KEY=false
 read -r -p "How many columns you want? " NO_OF_COLUMNS
 for ((i = 1; i <= NO_OF_COLUMNS; i++)); do
     read -r -p "What is the name of column number $i:  " column
+
+    while [[ "$column" = "int" || "$column" = "string" || "$column" = "boolean" || "$column" =~ [,⋮]$ ]]; do
+        read -r -p "Please enter a valid column name: " column
+    done
+
     read -r -p "What is the datatype of this column: " datatype
 
     if [ $i -eq 1 ]; then
-        echo "$column   $datatype   ⋮" >"$(pwd)/$TABLE_NAME"
+        echo "$column,   $datatype   ⋮" >"$(pwd)/$TABLE_NAME"
     else
-        sed -i "s/$/    $column   $datatype    ⋮/" "$(pwd)/$TABLE_NAME"
+        sed -i "s/$/    $column,   $datatype    ⋮/" "$(pwd)/$TABLE_NAME"
     fi
 done
 
@@ -19,5 +24,6 @@ if [ "$PRIMARY_KEY" = 'false' ]; then
     PRIMARY_KEY=true
     read -r -p "Which column do you want to be your primary key: " number
 
-    awk -i inplace -F'⋮' -v OFS='⋮' -v col="$number" '{ $col = $col "   (PRIMARY KEY) " }1' "$(pwd)/$TABLE_NAME"
+    awk -i inplace -F'⋮' -v OFS='⋮' -v col="$number" '{ $col = $col ",   (PRIMARY_KEY) " }1' "$(pwd)/$TABLE_NAME"
 fi
+echo ".................................................................................................." >>"$(pwd)/$TABLE_NAME"
