@@ -15,7 +15,7 @@ then
         if [[ $fieldNumber == "" ]]
         then
             echo "Not Found"
-            table_menu
+            . ../connect.sh
         else
             echo "Enter Value:"
             read value 2>> /dev/null
@@ -24,14 +24,14 @@ then
             if [[ $result == "" ]]
             then
                 echo "Value Not Found"
-                table_menu
+                . ../connect.sh
             else
                 # get the record number to be deleted
                 NR=$(awk 'BEGIN{FS="⋮"}{if ($'$fieldNumber'=="'$value'") print NR}' $table 2>> /dev/null)
                 # delete the record
                 sed -i ''$NR'd' $table 2>> /dev/null
                 echo "Row Deleted Successfully"
-                table_menu
+                . ../connect.sh
             fi
         fi
 else
