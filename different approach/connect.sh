@@ -1,24 +1,35 @@
 #!/bin/bash
 
-#creating a new database by checking two things
-# 1- its existence in my Database system
-# 2- a valid name
+#Selecting one of the available databases
 
-echo "Enter the database name: " 
-read DataBaseName
-
-#checking the name validity using regex
-while ! [[ $DataBaseName =~ ^[a-zA-Z_][a-zA-Z0-9_\$\@#]*$ ]]; do
-	echo "Enter a valid name that satisfys MYSQL naming convention"
-	read -p "Enter the database name :  " DataBaseName
-done
-
-#checking the existence of the database
-if [[ -d ./MyDBs/$DataBaseName ]]; then
-	echo "This name already exists, choose another name"
-	. ./creating_database.sh
-else
-	mkdir ./MyDBs/"$DataBaseName"
-	echo "DataBase: $DataBaseName was created Successfully"
-fi
-	
+function connectDB {
+	#listing available databases
+	echo -e "Existing databases are: "
+	 # send errors to /dev/null
+	ls ./MyDBs 2> /dev/null
+	echo $'Please Enter database name to connect it:\n'
+	read database 2> /dev/null
+	if [[ -d ./MyDBs/$database ]]
+	then 
+	#redirect to the selected database
+	       cd ./MyDBs/$database 2> /dev/null 
+	       echo 'Connected to' $database
+	       cd ../..
+		. ./tables_menu.sh
+	else 
+		echo "no database with $database name"
+		echo $'\nDo you want to create it? [y/n]\n'
+		read answer
+		case $answer in
+			y)
+			. ./creating_database.sh;;
+			n)
+			connectDB;;
+			*)
+			echo "Incorect answer, Redirecting to main menu..." ;
+			sleep 2
+			. ./opening_menu.sh;;	
+		esac
+	fi	
+}
+connectDB
