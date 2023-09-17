@@ -26,3 +26,4 @@ if [ "$PRIMARY_KEY" = 'false' ]; then
 
     awk -i inplace -F'⋮' -v OFS='⋮' -v col="$number" '{ $col = $col ",   (PRIMARY_KEY) " }1' "$(pwd)/$TABLE_NAME"
 fi
+echo ".................................................................................................." >>"$(pwd)/$TABLE_NAME"
