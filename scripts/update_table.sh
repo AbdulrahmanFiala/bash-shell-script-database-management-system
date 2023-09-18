@@ -122,11 +122,8 @@ select option in "${list_of_tables[@]}"; do
                 PS3="Which row/record do you want to update: "
                 # select menue displays all the lines of the choosen table
                 select choice in "${table_lines[@]}" "Type exit to exit editing"; do
-                    if [[ $REPLY == "exit" ]]; then
-                        echo "Exiting..."
-                        break
                     # validate the user input to be a number that's greater than or equal 1 and less than or equal the length of the array
-                    elif [[ $REPLY =~ ^[0-9]+$ && $REPLY -ge 1 && $REPLY -le ${#table_lines[@]} ]]; then
+                    if [[ $REPLY =~ ^[0-9]+$ && $REPLY -ge 1 && $REPLY -le ${#table_lines[@]} ]]; then
 
                         # substracting 1 from the reply to match the array index that starts from zero
                         selected_line="${table_lines[$((REPLY - 1))]}"
