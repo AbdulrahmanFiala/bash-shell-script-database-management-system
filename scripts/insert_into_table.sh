@@ -1,9 +1,13 @@
 #!/bin/bash
 function primary_key_vaildate() {
     key=$(awk -F "⋮" -v col="$i" 'NR == 1 {print $col}' "$(pwd)/$option" | awk -F "," '{print $3}')
-    if [[ $key == *"(PRIMARY_KEY)"* ]]; then
-        previous_values=($(awk -F "⋮" -v col="$i" 'NR > 2 {gsub(/^[ \t]+|[ \t]+$/,"",$col); print $col}' "$(pwd)/$option"))
 
+    # check if the column is a primary key
+    if [[ $key == *"(PRIMARY_KEY)"* ]]; then
+        # populate the previous_values array with the previous values of the same column
+        mapfile -t previous_values < <(awk -F "⋮" -v col="$i" 'NR > 2 {gsub(/^[ \t]+|[ \t]+$/,"",$col); print $col}' "$(pwd)/$option")
+
+        # iterate over the array to make sure that the data is unique
         for item in "${previous_values[@]}"; do
             while [[ "$item" == "$data" ]]; do
                 read -r -p "You can only enter unique values since this column is a primary key. Please enter a different value: " data
@@ -53,7 +57,6 @@ select option in "${list_of_tables[@]}"; do
     # validate the user input to be a number that's greater than or equal 1 and less than or equal the length of the array
     if [[ "$REPLY" =~ ^[0-9]+$ && "$REPLY" -ge 1 && "$REPLY" -le ${#list_of_tables[@]} ]]; then
         no_of_columns=$(awk -v val="⋮" 'NR == 1 {count += gsub(val, val)} END {print count}' "$(pwd)/$option")
-
         echo -e "" >>"$(pwd)/$option"
 
         for ((i = 1; i <= no_of_columns; i++)); do
