@@ -1,4 +1,48 @@
 #!/bin/bash
+function fix_indentation() {
+    max_count=0
+    count_of_rows=$(
+        wc -l <"$(pwd)/$option"
+    )
+    no_of_columns=$(awk -v val="⋮" 'NR == 1 {count += gsub(val, val)} END {print count}' "$(pwd)/$option")
+
+    for ((j = 1; j <= "$no_of_columns"; j++)); do
+        for ((z = 1; z <= "$count_of_rows"; z++)); do
+            if [ $z -eq 2 ]; then
+                continue
+            fi
+
+            count=$(awk -F'⋮' -v row=$z -v column=$j 'NR==row { print length($column)}' "$(pwd)/$option")
+            if [ "$count" -gt "$max_count" ]; then
+                max_count=$count
+            fi
+
+        done
+        for ((i = 1; i <= "$count_of_rows"; i++)); do
+            if [ $i -eq 2 ]; then
+                continue
+            fi
+            count=$(awk -F'⋮' -v row=$i -v column=$j 'NR==row { print length($column)}' "$(pwd)/$option")
+
+            result=$((max_count - count))
+            white_space=""
+
+            for ((z = 1; z <= "$result"; z++)); do
+                white_space="$white_space"" "
+            done
+            awk -i inplace -F'⋮' -v row=$i -v field=$j -v text="$white_space" '{
+        if (NR == row) {
+        OFS="⋮"  
+        $field = $field text
+        }
+        print
+    }' "$(pwd)/$option"
+
+        done
+    done
+
+}
+
 function primary_key_vaildate() {
     key=$(awk -F "⋮" -v col="$column_number" 'NR == 1 {print $col}' "$(pwd)/$option" | awk -F "," '{print $3}')
 
@@ -29,7 +73,7 @@ function primary_key_vaildate() {
 }
 
 function vaildate_int() {
-    while [[ ! "$updated_value" =~ [0-9]+ ]]; do
+    while [[ ! "$updated_value" =~ ^[0-9]+$ ]]; do
         read -r -p "Please enter a vaild integer: " updated_value
     done
     primary_key_vaildate
@@ -60,9 +104,11 @@ select option in "${list_of_tables[@]}"; do
     # validate the user input to be a number that's greater than or equal 1 and less than or equal the length of the array
     if [[ "$REPLY" =~ ^[0-9]+$ && "$REPLY" -ge 1 && "$REPLY" -le ${#list_of_tables[@]} ]]; then
         # check if the table is empty
+        first_record=$(sed -n '3p' "$(pwd)/$option")
         if [ ! -s "$(pwd)"/"$option" ]; then
             echo "$option" table is an empty table. You cannont update an empty table.
-
+        elif [ -z "$first_record" ]; then
+            echo "$option" table dones not have any records. Please insert into it first before trying to update it.
         else
             {
                 # populate the table_lines array with the lines of the chosen table starting from the 3rd line since the first line is the heading and the second is a seprator between the header and the actual data
@@ -91,8 +137,8 @@ select option in "${list_of_tables[@]}"; do
                         read -r -p "Which column do you want to update: " column_number
 
                         # vaildate the user reply to be a number and less than or equal the number of columns
-                        while [[ ! $REPLY =~ ^[0-9]+$ || "$column_number" -gt "$no_of_columns" ]]; do
-                            read -r -p "Please insert a vaild column to update since there're only ($no_of_columns columns): " column_number
+                        while [[ ! $column_number =~ ^[0-9]+$ || "$column_number" -gt "$no_of_columns" ]]; do
+                            read -r -p "Please insert a vaild column number to update since there're only ($no_of_columns columns): " column_number
                         done
 
                         read -r -p "Please enter the updated value: " updated_value
@@ -111,7 +157,7 @@ select option in "${list_of_tables[@]}"; do
                         fi
 
                         # Use awk to update the specific line and column
-                        awk -i inplace -v line="$((REPLY + 2))" -v col="$column_number" -v val="       $updated_value      " '
+                        awk -i inplace -v line="$((REPLY + 2))" -v col="$column_number" -v val=" $updated_value" '
                         BEGIN { OFS = "⋮" } 
                         NR == line {
                             split($0, fields, OFS)
@@ -129,18 +175,19 @@ select option in "${list_of_tables[@]}"; do
                         }
                         { print }
                     ' "$(pwd)/$option"
+                        fix_indentation
+                        echo "The column has been updated successfully!"
+                        echo "Getting back to connect DBs menue"
+                        cd "../../"
+                        "./connect.sh"
 
                     else
                         echo "Invalid selection. Please enter a valid number."
                     fi
                 done
-                break
             }
         fi
     else
-        echo "Invalid choice. Please select a valid option."
+        echo "Invalid choice. Please select a valid number."
     fi
 done
-echo "Getting back to connect DBs menue"
-cd "../../"
-"./connect.sh"

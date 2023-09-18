@@ -1,4 +1,48 @@
 #!/bin/bash
+function fix_indentation() {
+    max_count=0
+    count_of_rows=$(
+        wc -l <"$(pwd)/$option"
+    )
+    no_of_columns=$(awk -v val="⋮" 'NR == 1 {count += gsub(val, val)} END {print count}' "$(pwd)/$option")
+
+    for ((j = 1; j <= "$no_of_columns"; j++)); do
+        for ((z = 1; z <= "$count_of_rows"; z++)); do
+            if [ $z -eq 2 ]; then
+                continue
+            fi
+
+            count=$(awk -F'⋮' -v row=$z -v column=$j 'NR==row { print length($column)}' "$(pwd)/$option")
+            if [ "$count" -gt "$max_count" ]; then
+                max_count=$count
+            fi
+
+        done
+        for ((i = 1; i <= "$count_of_rows"; i++)); do
+            if [ $i -eq 2 ]; then
+                continue
+            fi
+            count=$(awk -F'⋮' -v row=$i -v column=$j 'NR==row { print length($column)}' "$(pwd)/$option")
+
+            result=$((max_count - count))
+            white_space=""
+
+            for ((z = 1; z <= "$result"; z++)); do
+                white_space="$white_space"" "
+            done
+            awk -i inplace -F'⋮' -v row=$i -v field=$j -v text="$white_space" '{
+        if (NR == row) {
+        OFS="⋮"  
+        $field = $field text
+        }
+        print
+    }' "$(pwd)/$option"
+
+        done
+    done
+
+}
+
 function primary_key_vaildate() {
     key=$(awk -F "⋮" -v col="$i" 'NR == 1 {print $col}' "$(pwd)/$option" | awk -F "," '{print $3}')
 
@@ -27,7 +71,7 @@ function primary_key_vaildate() {
 }
 
 function vaildate_int() {
-    while [[ ! "$data" =~ [0-9]+ ]]; do
+    while [[ ! "$data" =~ ^[0-9]+$ ]]; do
         read -r -p "Please enter a vaild integer: " data
     done
     primary_key_vaildate
@@ -73,8 +117,9 @@ select option in "${list_of_tables[@]}"; do
                 vaildate_boolean
             fi
 
-            sed -i '$s/$/              '"$data"'            ⋮/' "$(pwd)/$option"
+            sed -i '$s/$/'" $data"'⋮/' "$(pwd)/$option"
         done
+        fix_indentation
         echo "Getting back to connect DBs menue"
         cd "../../"
         "./connect.sh"
