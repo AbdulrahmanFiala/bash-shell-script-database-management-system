@@ -44,7 +44,7 @@ for ((i = 1; i <= NO_OF_COLUMNS; i++)); do
 
     # if the file is empty we add this first column
     if [ $i -eq 1 ]; then
-        echo "$column,   $datatype   ⋮" >"$(pwd)/$TABLE_NAME"
+        echo "$column,   $datatype  ⋮" >"$(pwd)/$TABLE_NAME"
 
     # if the file is not empty we append rest of the columns
     else
@@ -65,10 +65,10 @@ if [ "$PRIMARY_KEY" = 'false' ]; then
         read -r -p "Please enter a valid column number: " number
     done
 
-    awk -i inplace -F'⋮' -v OFS='⋮' -v col="$number" '{ $col = $col ",   (PRIMARY_KEY) " }1' "$(pwd)/$TABLE_NAME"
+    awk -i inplace -F'⋮' -v OFS='⋮' -v col="$number" '{ $col = $col ",   (PRIMARY_KEY)  " }1' "$(pwd)/$TABLE_NAME"
 fi
 echo ".................................................................................................." >>"$(pwd)/$TABLE_NAME"
 
-echo "Getting back to connect DBs menue"
+echo "Getting back to connect DBs menu: "
 cd "../../"
 "./connect.sh"
