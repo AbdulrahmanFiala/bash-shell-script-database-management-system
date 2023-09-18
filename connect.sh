@@ -6,7 +6,7 @@ select db in "${list_of_databases[@]}"; do
     if [[ "$REPLY" =~ ^[0-9]+$ && "$REPLY" -ge 1 && "$REPLY" -le ${#list_of_databases[@]} ]]; then
 
         cd "$(pwd)/MyDBs/$db"
-        PS3="Select an operating on the database $db: "
+        PS3="Select an operation on the database $db: "
         options=("Create Table" "List Tables" "Drop Table" "Insert into Table" "Select From Table" "Delete From Table" "Update Table" "Back to the main menue")
 
         select choice in "${options[@]}"; do
@@ -50,6 +50,6 @@ select db in "${list_of_databases[@]}"; do
         done
 
     else
-        echo "$DB_NAME Database doesn't exist"
+        echo "Please enter a vaild number."
     fi
 done
