@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # convert the list of tables files of the DB to an array to iterate over them.
 readarray -t list_of_tables < <(ls "$(pwd)")
 
