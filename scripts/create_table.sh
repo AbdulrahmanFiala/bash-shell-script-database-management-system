@@ -61,7 +61,7 @@ if [ "$PRIMARY_KEY" = 'false' ]; then
     # count the number of columns to validate user input
     column_count=$(awk -F ',' 'NR==1 {print NF; exit}' "$(pwd)/$TABLE_NAME")
 
-    while [[ number -ge $column_count ]]; do
+    while [[ ! $number =~ ^[0-9]+$ || $number -gt $column_count ]]; do
         read -r -p "Please enter a valid column number: " number
     done
 
