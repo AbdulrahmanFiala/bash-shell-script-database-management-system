@@ -27,14 +27,13 @@ select option in "${list_of_tables[@]}"; do
                         ;;
                     "Only a row")
                         read -r -p "Please enter the row number you want to read: " row_number
-
                         # validate that the user input is a vaild row in the chosen table
-                        while [ "$row_number" -gt "$(wc -l <"$(pwd)"/"$option")" ]; do
+                        while [ $((row_number + 3)) -gt "$(wc -l <"$(pwd)"/"$option")" ]; do
                             read -r -p "Please enter a vaild row number: " row_number
                         done
 
                         # print the choosen row number
-                        sed -n "${row_number}p" "$(pwd)"/"$option"
+                        sed -n "$((row_number + 2))p" "$(pwd)/$option"
 
                         break
                         ;;

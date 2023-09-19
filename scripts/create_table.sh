@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 read -r -p "What is the name of the table: " TABLE_NAME
+while [[ -z "$TABLE_NAME" ]]; do 
+    read -r -p "Please enter a non empty table name: " TABLE_NAME
+done
+
 touch "$(pwd)/$TABLE_NAME"
 PRIMARY_KEY=false
 
