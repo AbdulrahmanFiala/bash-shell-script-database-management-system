@@ -3,7 +3,7 @@ readarray -t list_of_databases < <(ls "$(pwd)/MyDBs")
 PS3="Which database do you want to connect to: "
 
 select db in "${list_of_databases[@]}"; do
-    if [[ "$REPLY" =~ ^[0-9]+$ && "$REPLY" -ge 1 && "$REPLY" -le ${#list_of_databases[@]} ]]; then
+    if [[ "$REPLY" =~ ^[0-9]+$ && "$REPLY" -ge 1 && "$REPLY" -le ${#list_of_databases[@]} && -d "$(pwd)/MyDBs/$db" ]]; then
 
         cd "$(pwd)/MyDBs/$db"
         PS3="Select an operation on the database $db: "
@@ -50,6 +50,6 @@ select db in "${list_of_databases[@]}"; do
         done
 
     else
-        echo "Please enter a vaild number."
+        echo "Please enter a vaild option."
     fi
 done
